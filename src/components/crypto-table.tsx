@@ -130,10 +130,14 @@ export function CryptoTable() {
               placeholder="0.00"
             />
           </TableCell>
-          <TableCell>${ethAaveValue}</TableCell>
-          <TableCell>${usdcValue}</TableCell>
-          <TableCell className="bg-[#83E291]">${safeValue}</TableCell>
-          <TableCell className="bg-[#F1CEEE]">${idealValue}</TableCell>
+          <TableCell>{ethAaveValue && `$${ethAaveValue}`}</TableCell>
+          <TableCell>{usdcValue && `$${usdcValue}`}</TableCell>
+          <TableCell className={safeValue ? "bg-[#83E291]" : ""}>
+            {safeValue && `$${safeValue}`}
+          </TableCell>
+          <TableCell className={idealValue ? "bg-[#F1CEEE]" : ""}>
+            {idealValue && `$${idealValue}`}
+          </TableCell>
         </TableRow>
         <TableRow>
           <TableCell />
@@ -150,13 +154,13 @@ export function CryptoTable() {
               placeholder="$0.00"
             />
           </TableCell>
-          <TableCell>${usdcIncrease}</TableCell>
+          <TableCell>{usdcIncrease ? `$${usdcIncrease}` : ""}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell />
           <TableCell />
-          <TableCell>${ethDifference}</TableCell>
-          <TableCell>${winnings}</TableCell>
+          <TableCell>{ethDifference ? `$${ethDifference}` : ""}</TableCell>
+          <TableCell>{winnings ? `$${winnings}` : ""}</TableCell>
         </TableRow>
       </TableBody>
     </Table>

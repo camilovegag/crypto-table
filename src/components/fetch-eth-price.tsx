@@ -73,10 +73,13 @@ const FetchEthPrice = () => {
       <h2 className="text-2xl font-bold">Ethereum</h2>
       {ethPrice ? (
         <div className="flex flex-col gap-2">
-          <div className="flex gap-3 items-end">
-            <p className="text-lg">${parseFloat(ethPrice).toFixed(2)}</p>
+          <div className="flex gap-3 items-end w-full">
             <Button variant="outline" size="icon" onClick={copyToClipboard}>
               <Copy />
+            </Button>
+            <p className="text-lg">${parseFloat(ethPrice).toFixed(2)}</p>
+            <Button className="ml-auto" onClick={fetchPrice}>
+              Actualizar
             </Button>
           </div>
           <p className="text-sm text-gray-500">
@@ -84,7 +87,7 @@ const FetchEthPrice = () => {
           </p>
         </div>
       ) : (
-        <p>Loading...</p>
+        <p>Cargando...</p>
       )}
     </section>
   );
