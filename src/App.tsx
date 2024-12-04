@@ -20,6 +20,7 @@ export default function App() {
     }
   }, [ethPrice]);
 
+export default function App() {
   return (
     <>
       <header className="border-b">
