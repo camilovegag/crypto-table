@@ -32,6 +32,10 @@ export default function App() {
     setTables([{ id, timestamp, ethBehavior }, ...tables]);
   };
 
+  const deleteTable = (id: string) => {
+    setTables(tables.filter((table) => table.id !== id));
+  };
+
   return (
     <>
       <header className="border-b">
@@ -71,6 +75,7 @@ export default function App() {
                   ethBehavior={table.ethBehavior}
                   id={table.id}
                   timestamp={table.timestamp}
+                  onDelete={() => deleteTable(table.id)}
                 />
               ))}
             </section>
