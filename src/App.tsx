@@ -13,8 +13,6 @@ export default function App() {
   const { ethPrice } = useEthPrice();
   const [ethValue, setEthValue] = useState("");
   const [tab, setTab] = useState("up");
-  const [tableCountUp, setTableCountUp] = useState(1);
-  const [tableCountDown, setTableCountDown] = useState(1);
 
   useEffect(() => {
     if (ethPrice) {
@@ -60,20 +58,10 @@ export default function App() {
               </TabsTrigger>
             </TabsList>
             <TabsContent className="overflow-auto h-96" value="up">
-              <CryptoTableTabsContent
-                ethValue={ethValue}
-                ethBehavior="up"
-                tableCount={tableCountUp}
-                setTableCount={setTableCountUp}
-              />
+              <CryptoTableTabsContent ethValue={ethValue} ethBehavior="up" />
             </TabsContent>
             <TabsContent className="overflow-auto h-96" value="down">
-              <CryptoTableTabsContent
-                ethValue={ethValue}
-                ethBehavior="down"
-                tableCount={tableCountDown}
-                setTableCount={setTableCountDown}
-              />
+              <CryptoTableTabsContent ethValue={ethValue} ethBehavior="down" />
             </TabsContent>
           </Tabs>
           <List />

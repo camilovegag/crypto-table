@@ -10,11 +10,16 @@ import { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 
 interface CryptoTableProps {
+  index: number;
   ethValue: string;
   ethBehavior: "up" | "down";
 }
 
-export function CryptoTable({ ethValue, ethBehavior }: CryptoTableProps) {
+export function CryptoTable({
+  index,
+  ethValue,
+  ethBehavior,
+}: CryptoTableProps) {
   const [usdc, setUsdc] = useState("");
   const [eth, setEth] = useState("");
   const [ethAaveValue, setEthAaveValue] = useState("");
@@ -105,8 +110,8 @@ export function CryptoTable({ ethValue, ethBehavior }: CryptoTableProps) {
         <TableRow>
           <TableCell>
             <Input
-              id="usdc"
-              name="usdc"
+              id={`usdc-${index}`}
+              name={`usdc-${index}`}
               className="min-w-24"
               type="text"
               value={usdc}
@@ -120,8 +125,8 @@ export function CryptoTable({ ethValue, ethBehavior }: CryptoTableProps) {
           </TableCell>
           <TableCell>
             <Input
-              id="eth"
-              name="eth"
+              id={`eth-${index}`}
+              name={`eth-${index}`}
               className="min-w-24"
               type="text"
               value={eth}
