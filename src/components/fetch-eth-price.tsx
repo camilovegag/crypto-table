@@ -1,76 +1,63 @@
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Contract, formatUnits, JsonRpcProvider } from "ethers";
-import { Copy } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Copy, RefreshCcw } from "lucide-react";
 import { Button } from "./ui/button";
+import { useEthPrice } from "@/hooks/use-eth-price";
+import { useEffect, useRef, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const FetchEthPrice = () => {
-  const [ethPrice, setEthPrice] = useState<string | null>(null);
-  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const { ethPrice, lastUpdated, fetchPrice } = useEthPrice();
   const { toast } = useToast(); // Toast hook from shadcn
+  const [currentTime, setCurrentTime] = useState(
+    new Date().toLocaleTimeString()
+  );
+  const prevEthPrice = useRef<string | null>(null);
 
-  // Aave Oracle Contract Address and ABI
-  const oracleAddress = "0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70"; // Replace with your desired oracle
-  const aggregatorV3InterfaceABI = [
-    {
-      inputs: [],
-      name: "latestRoundData",
-      outputs: [
-        { internalType: "uint80", name: "roundId", type: "uint80" },
-        { internalType: "int256", name: "answer", type: "int256" },
-        { internalType: "uint256", name: "startedAt", type: "uint256" },
-        { internalType: "uint256", name: "updatedAt", type: "uint256" },
-        { internalType: "uint80", name: "answeredInRound", type: "uint80" },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-  ];
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    }, 1000);
 
-  const fetchPrice = async () => {
-    try {
-      const provider = new JsonRpcProvider("https://mainnet.base.org"); // Replace with your provider URL
+    return () => clearInterval(interval);
+  }, []);
 
-      const contract = new Contract(
-        oracleAddress,
-        aggregatorV3InterfaceABI,
-        provider
-      );
-
-      const roundData = await contract.latestRoundData();
-      const price = formatUnits(roundData.answer, 8); // Price is in 8 decimals
-      setEthPrice(price);
-      setLastUpdated(
-        new Date(Number(roundData.updatedAt) * 1000).toLocaleString()
-      );
-    } catch (error) {
-      console.error("Error fetching ETH price:", error);
+  useEffect(() => {
+    if (prevEthPrice.current && prevEthPrice.current !== ethPrice) {
+      toast({
+        className: cn(
+          "top-0 right-0 flex fixed md:max-w-[320px] md:top-4 md:right-4 border-blue-300"
+        ),
+        title: "Precio de ETH Actualizado! 🚀",
+        description: `Nuevo: $${ethPrice}, anterior: $${prevEthPrice.current}`,
+      });
     }
-  };
+    prevEthPrice.current = ethPrice;
+  }, [ethPrice, toast]);
 
   const copyToClipboard = () => {
     if (ethPrice) {
       navigator.clipboard.writeText(`${parseFloat(ethPrice).toFixed(2)}`);
       toast({
         className: cn(
-          "top-0 right-0 flex fixed md:max-w-[220px] md:top-4 md:right-4"
+          "top-0 right-0 flex fixed md:max-w-[320px] md:top-4 md:right-4"
         ),
         title: "Precio de ETH Copiado!",
         description: `${ethPrice}`,
+
       });
     }
   };
 
-  useEffect(() => {
-    fetchPrice(); // Initial fetch
-    const interval = setInterval(fetchPrice, 30000); // Fetch every 30 seconds
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, []);
-
   return (
     <section className="flex flex-col gap-2">
-      <h2 className="text-2xl font-bold">Ethereum</h2>
+      <div className="flex gap-2 items-center">
+        <h2 className="text-2xl font-bold">Ethereum (Aave)</h2>
+        <Avatar className="w-6">
+          <AvatarImage src="./base.svg" />
+          <AvatarFallback>BASE</AvatarFallback>
+        </Avatar>
+      </div>
       {ethPrice ? (
         <div className="flex flex-col gap-2">
           <div className="flex gap-3 items-end w-full">
@@ -79,12 +66,14 @@ const FetchEthPrice = () => {
             </Button>
             <p className="text-lg">${parseFloat(ethPrice).toFixed(2)}</p>
             <Button className="ml-auto" onClick={fetchPrice}>
+              <RefreshCcw />
               Actualizar
             </Button>
           </div>
           <p className="text-sm text-gray-500">
             Ultima actualización: {lastUpdated}
           </p>
+          <p className="text-sm text-gray-500">Hora actual: {currentTime}</p>
         </div>
       ) : (
         <p>Cargando...</p>

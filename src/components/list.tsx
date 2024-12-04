@@ -36,9 +36,9 @@ function List() {
     setNewTodo("");
     toast({
       className: cn(
-        "top-0 right-0 flex fixed md:max-w-[220px] md:top-4 md:right-4"
+        "top-0 right-0 flex fixed md:max-w-[220px] md:top-4 md:right-4 border-green-300"
       ),
-      title: "Transacción agregada!",
+      title: "Transacción agregada ✅",
     });
   };
 
@@ -48,9 +48,9 @@ function List() {
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
     toast({
       className: cn(
-        "top-0 right-0 flex fixed md:max-w-[220px] md:top-4 md:right-4"
+        "top-0 right-0 flex fixed md:max-w-[220px] md:top-4 md:right-4 border-red-300"
       ),
-      title: "Transacción eliminada!",
+      title: "Transacción eliminada ❌",
     });
   };
 
@@ -63,21 +63,23 @@ function List() {
   return (
     <section className="flex flex-col gap-4">
       <h2 className="text-2xl font-bold">Historial de transacciones</h2>
-      <div className="flex gap-4">
+      <div className="flex gap-2">
         <Input
+          id="add"
+          name="add"
           type="text"
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Agrega tu transacción acá"
+          placeholder="Agrega tu transacción..."
         />
         <Button onClick={addTodo}>Agregar</Button>
       </div>
-      <ul className="flex flex-col gap-6 mt-4 overflow-auto h-96 border p-4 rounded-sm">
+      <ul className="flex flex-col gap-6 mt-4 overflow-auto h-96 border p-4 rounded-md">
         {todos.map((todo) => (
           <li className="flex gap-4 items-start" key={todo.id}>
             <Button
-            className="hover:bg-red-300"
+              className="hover:bg-red-300"
               variant="outline"
               size="icon"
               onClick={() => removeTodo(todo.id)}
