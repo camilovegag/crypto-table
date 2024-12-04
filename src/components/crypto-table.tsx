@@ -9,13 +9,16 @@ import {
 import { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 
-export function CryptoTable() {
+interface CryptoTableProps {
+  ethValue: string;
+  ethBehavior: "up" | "down";
+}
+
+export function CryptoTable({ ethValue, ethBehavior }: CryptoTableProps) {
   const [usdc, setUsdc] = useState("");
   const [eth, setEth] = useState("");
   const [ethAaveValue, setEthAaveValue] = useState("");
-  const [ethValue, setEthValue] = useState("");
   const [ethDifference, setEthDifference] = useState("");
-  const [usdcValue, setUsdcValue] = useState("");
   const [usdcIncrease, setUsdcIncrease] = useState("");
   const [winnings, setWinnings] = useState("");
   const [safeValue, setSafeValue] = useState("");
@@ -40,15 +43,6 @@ export function CryptoTable() {
   }, [ethAaveValue, ethValue]);
 
   useEffect(() => {
-    if (ethAaveValue && eth && eth !== "." && eth !== "0" && eth !== "0.") {
-      const value = parseFloat(eth) * parseFloat(ethAaveValue);
-      setUsdcValue(value.toFixed(2));
-    } else {
-      setUsdcValue("");
-    }
-  }, [eth, ethAaveValue]);
-
-  useEffect(() => {
     if (eth && ethValue) {
       const value = parseFloat(eth) * parseFloat(ethValue);
       setUsdcIncrease(value.toFixed(2));
@@ -58,34 +52,37 @@ export function CryptoTable() {
   }, [eth, ethValue]);
 
   useEffect(() => {
-    if (usdcValue && usdcIncrease) {
-      const value = parseFloat(usdcIncrease) - parseFloat(usdcValue);
+    if (usdc && usdcIncrease) {
+      const value = parseFloat(usdcIncrease) - parseFloat(usdc);
       setWinnings(value.toFixed(2));
     } else {
       setWinnings("");
     }
-  }, [usdcValue, usdcIncrease]);
+  }, [usdc, usdcIncrease]);
 
   useEffect(() => {
     if (ethAaveValue) {
       const value =
-        parseFloat(ethAaveValue) * 0.004334 + parseFloat(ethAaveValue);
+        ethBehavior === "up"
+          ? parseFloat(ethAaveValue) * 0.004334 + parseFloat(ethAaveValue)
+          : parseFloat(ethAaveValue) * 0.004334 - parseFloat(ethAaveValue);
       setSafeValue(value.toFixed(2));
     } else {
       setSafeValue("");
     }
-  }, [ethAaveValue]);
+  }, [ethAaveValue, ethBehavior]);
 
   useEffect(() => {
     if (ethAaveValue) {
       const value =
-        parseFloat(ethAaveValue) * 0.0065 + parseFloat(ethAaveValue);
-      console.log("value:", value);
+        ethBehavior === "up"
+          ? parseFloat(ethAaveValue) * 0.0065 + parseFloat(ethAaveValue)
+          : parseFloat(ethAaveValue) * 0.0065 - parseFloat(ethAaveValue);
       setIdealValue(value.toFixed(2));
     } else {
       setIdealValue("");
     }
-  }, [ethAaveValue]);
+  }, [ethAaveValue, ethBehavior]);
 
   const validateInput = (value: string) => {
     const regex = /^[0-9]*\.?[0-9]*$/;
@@ -108,6 +105,9 @@ export function CryptoTable() {
         <TableRow>
           <TableCell>
             <Input
+              id="usdc"
+              name="usdc"
+              className="min-w-24"
               type="text"
               value={usdc}
               onChange={(e) => {
@@ -120,6 +120,9 @@ export function CryptoTable() {
           </TableCell>
           <TableCell>
             <Input
+              id="eth"
+              name="eth"
+              className="min-w-24"
               type="text"
               value={eth}
               onChange={(e) => {
@@ -130,30 +133,21 @@ export function CryptoTable() {
               placeholder="0.00"
             />
           </TableCell>
-          <TableCell>{ethAaveValue && `$${ethAaveValue}`}</TableCell>
-          <TableCell>{usdcValue && `$${usdcValue}`}</TableCell>
-          <TableCell className={safeValue ? "bg-[#83E291]" : ""}>
+          <TableCell className="min-w-28">
+            {ethAaveValue && `$${ethAaveValue}`}
+          </TableCell>
+          <TableCell className="min-w-24">{usdc && `$${usdc}`}</TableCell>
+          <TableCell className={safeValue ? "bg-[#83E291] min-w-24" : ""}>
             {safeValue && `$${safeValue}`}
           </TableCell>
-          <TableCell className={idealValue ? "bg-[#F1CEEE]" : ""}>
+          <TableCell className={idealValue ? "bg-[#F1CEEE] min-w-24" : ""}>
             {idealValue && `$${idealValue}`}
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell />
           <TableCell />
-          <TableCell>
-            <Input
-              type="text"
-              value={ethValue}
-              onChange={(e) => {
-                if (validateInput(e.target.value)) {
-                  setEthValue(e.target.value);
-                }
-              }}
-              placeholder="$0.00"
-            />
-          </TableCell>
+          <TableCell>{ethValue && `$${ethValue}`}</TableCell>
           <TableCell>{usdcIncrease ? `$${usdcIncrease}` : ""}</TableCell>
         </TableRow>
         <TableRow>
