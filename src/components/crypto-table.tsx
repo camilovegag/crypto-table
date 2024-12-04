@@ -58,12 +58,15 @@ export function CryptoTable({
 
   useEffect(() => {
     if (usdc && usdcIncrease) {
-      const value = parseFloat(usdcIncrease) - parseFloat(usdc);
+      const value =
+        ethBehavior === "up"
+          ? parseFloat(usdcIncrease) - parseFloat(usdc)
+          : parseFloat(usdc) - parseFloat(usdcIncrease);
       setWinnings(value.toFixed(2));
     } else {
       setWinnings("");
     }
-  }, [usdc, usdcIncrease]);
+  }, [ethBehavior, usdc, usdcIncrease]);
 
   useEffect(() => {
     if (ethAaveValue) {
