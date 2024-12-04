@@ -75,26 +75,28 @@ function List() {
         />
         <Button onClick={addTodo}>Agregar</Button>
       </div>
-      <ul className="flex flex-col gap-6 mt-4 overflow-auto h-96 border p-4 rounded-md">
-        {todos.map((todo) => (
-          <li className="flex gap-4 items-start" key={todo.id}>
-            <Button
-              className="hover:bg-red-300"
-              variant="outline"
-              size="icon"
-              onClick={() => removeTodo(todo.id)}
-            >
-              <Trash />
-            </Button>
-            <div className="flex flex-col gap-1">
-              <span>{todo.text}</span>
-              <span className="text-xs text-gray-500">
-                {new Date(todo.timestamp).toLocaleString()}
-              </span>
-            </div>
-          </li>
-        ))}
-      </ul>
+      {todos.length > 0 && (
+        <ul className="flex flex-col gap-6 mt-4 overflow-auto h-96 border p-4 rounded-md">
+          {todos.map((todo) => (
+            <li className="flex gap-4 items-start" key={todo.id}>
+              <Button
+                className="hover:bg-red-300"
+                variant="outline"
+                size="icon"
+                onClick={() => removeTodo(todo.id)}
+              >
+                <Trash />
+              </Button>
+              <div className="flex flex-col gap-1">
+                <span>{todo.text}</span>
+                <span className="text-xs text-gray-500">
+                  {new Date(todo.timestamp).toLocaleString()}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 }

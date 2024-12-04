@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 
 interface CryptoTableProps {
-  index: number;
+  index: string;
   ethValue: string;
   ethBehavior: "up" | "down";
 }
