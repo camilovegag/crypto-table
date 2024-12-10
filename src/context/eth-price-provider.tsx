@@ -26,10 +26,11 @@ export default function EthPriceProvider({ children }: EthPriceProviderProps) {
       );
 
       const roundData = await contract.latestRoundData();
+      console.log("🚀 ~ fetchPrice ~ roundData:", roundData.updatedAt);
       const price = formatUnits(roundData.answer, 8);
       setEthPrice(price);
       setLastUpdated(
-        new Date(Number(roundData.updatedAt) * 1000).toLocaleString()
+        new Date(Number(roundData.updatedAt) * 1000).toLocaleTimeString()
       );
     } catch (error) {
       console.error("Error fetching ETH price:", error);
