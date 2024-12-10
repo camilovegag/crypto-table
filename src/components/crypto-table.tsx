@@ -100,8 +100,8 @@ export function CryptoTable({
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">USDC</TableHead>
+        <TableRow className='h-11'>
+          <TableHead className='w-[100px]'>USDC</TableHead>
           <TableHead>ETH</TableHead>
           <TableHead>Valor ETH</TableHead>
           <TableHead>Resultado</TableHead>
@@ -110,55 +110,59 @@ export function CryptoTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
+        <TableRow className='h-11'>
           <TableCell>
             <Input
               id={`usdc-${index}`}
               name={`usdc-${index}`}
-              className="min-w-24"
-              type="text"
+              className='min-w-24 h-6'
+              type='text'
               value={usdc}
               onChange={(e) => {
                 if (validateInput(e.target.value)) {
                   setUsdc(e.target.value);
                 }
               }}
-              placeholder="$0.00"
+              placeholder='$0.00'
             />
           </TableCell>
           <TableCell>
             <Input
               id={`eth-${index}`}
               name={`eth-${index}`}
-              className="min-w-24"
-              type="text"
+              className='min-w-24 h-6'
+              type='text'
               value={eth}
               onChange={(e) => {
                 if (validateInput(e.target.value)) {
                   setEth(e.target.value);
                 }
               }}
-              placeholder="0.00"
+              placeholder='0.00'
             />
           </TableCell>
-          <TableCell className="min-w-28">
+          <TableCell className='min-w-28'>
             {ethAaveValue && `$${ethAaveValue}`}
           </TableCell>
-          <TableCell className="min-w-24">{usdc && `$${usdc}`}</TableCell>
-          <TableCell className={safeValue ? "bg-[#83E291] min-w-24" : ""}>
+          <TableCell className='min-w-24'>{usdc && `$${usdc}`}</TableCell>
+          <TableCell
+            className={safeValue ? "border-2 border-[#83E291] min-w-24" : ""}
+          >
             {safeValue && `$${safeValue}`}
           </TableCell>
-          <TableCell className={idealValue ? "bg-[#F1CEEE] min-w-24" : ""}>
+          <TableCell
+            className={idealValue ? "border border-[#F1CEEE] min-w-24" : ""}
+          >
             {idealValue && `$${idealValue}`}
           </TableCell>
         </TableRow>
-        <TableRow>
+        <TableRow className='h-11'>
           <TableCell />
           <TableCell />
           <TableCell>{ethValue && `$${ethValue}`}</TableCell>
           <TableCell>{usdcIncrease ? `$${usdcIncrease}` : ""}</TableCell>
         </TableRow>
-        <TableRow>
+        <TableRow className='h-11'>
           <TableCell />
           <TableCell />
           <TableCell>{ethDifference ? `$${ethDifference}` : ""}</TableCell>
