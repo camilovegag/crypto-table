@@ -4,7 +4,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Toaster } from "@/components/ui/toaster";
 import { useEthPrice } from "@/hooks/use-eth-price";
-import { TrendingDown, TrendingUp } from "lucide-react";
+import { RotateCcw, TrendingDown, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "./components/ui/button";
 import CryptoTableTab from "./components/tab-content";
@@ -16,7 +16,7 @@ interface Table {
 }
 
 export default function App() {
-  const { ethPrice } = useEthPrice();
+  const { ethPrice, fetchPrice } = useEthPrice();
   const [ethValue, setEthValue] = useState<string>("");
   const [tables, setTables] = useState<Table[]>([]);
 
@@ -79,7 +79,12 @@ export default function App() {
               <TrendingDown className='w-5 text-red-400' />
             </Button>
           </div>
-          <ModeToggle />
+          <div className='flex gap-3' onClick={() => fetchPrice()}>
+            <Button variant='outline' size='icon'>
+              <RotateCcw />
+            </Button>
+            <ModeToggle />
+          </div>
         </nav>
       </header>
       <Toaster />
